@@ -9,6 +9,9 @@ const useMaze = (rows, columns) => {
     build();
     let walls = createInstructions();
 
+    // create the array of objects that list all neighboring cells. We don't need left and above
+    // since the right and below of earliser cells will handle that relationship.
+    // For rows/columns = 3 [{"i":0,"j":1},{"i":0,"j":3},{"i":1,"j":2},{"i":1,"j":4}.....]
     function createInitialWallList() {
         let w = [];
         for (let i = 0; i < rows * columns; i++) {
@@ -23,7 +26,7 @@ const useMaze = (rows, columns) => {
                 }
             }
         }
-        //console.log("createInitialWallList.w : " + JSON.stringify(w));
+        console.log("createInitialWallList.w : " + JSON.stringify(w));
         return w;
     }
 
@@ -92,6 +95,8 @@ const useMaze = (rows, columns) => {
         return cell % columns;
     }
 
+    // for a given cell, determine which other cells in the grid are neighbors that have
+    // not yet been visited. this method gets called while the maze is created via the build() method.
     function getNeighbors(cellNumber) {
         //console.log("getNeighbors called with ", cellNumber);
         let neighborArray = [];
@@ -143,10 +148,13 @@ const useMaze = (rows, columns) => {
         } else {
             //console.log("below", below, "was not >= 0 ");
         }
-        //console.log("getNeighbors called with", cellNumber, "and returning", neighborArray);
+        console.log("getNeighbors called with", cellNumber, "and returning", neighborArray);
         return neighborArray;
     }
-    // starting at cell 0, remove a neighbor for every cell
+
+    // starting at cell 0, remove a random neighbor for every cell. If a cell does not have a neighbor, use the
+    // history array to go back to the previous cell until you find a cell that has a neighbor. Do that until
+    // every cell in the grid (rows*columns) has been visited.
     function build() {
         //console.log("build");
         let numberVisited = 1;
@@ -156,7 +164,7 @@ const useMaze = (rows, columns) => {
         getBuildVisited().push(currentCell);
         //console.log("build at start", JSON.stringify(realWalls));
 
-        let loopCount = 0;
+        let loopCount = 0; // this is just a catch in case we are in an infinite loop...we can remove soon
         while (numberVisited < rows * columns) {
             loopCount++;
             // get all the neighbors of this cell
@@ -187,11 +195,12 @@ const useMaze = (rows, columns) => {
                 currentCell = randomNeighbor;
                 numberVisited++;
             } else {
+                // this cell has no unvisited neighbors so add to visited array and pop off a history cell
                 getBuildVisited().push(currentCell);
                 currentCell = history.pop();
             }
             // TOFIX: remove this safety check
-            if (loopCount > 2000) {
+            if (loopCount > 3000) {
                 console.log("build.loopCount exceeded Max", loopCount);
                 break;
             }

@@ -1,15 +1,11 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
   font-weight: 400;
+  font-size: 24px;
   color-scheme: light dark;
-  background-color: white;
   --cell-size: 100%;
   --cell-thickness: 3px;
   --grid-size: 4;
-  /* --start-end-color: rgb(160, 196, 238); */
-  --start-end-color: white;
-  width: 100%;
 }
 
 body {
@@ -20,10 +16,21 @@ body {
   min-height: 100vh;
   justify-content: center;
 }
+.outer-container {
+    display: flex;
+}
+.start-container {
+    padding-right: 5px;
+}
+.end-container {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end;
+    padding-left: 5px;
+}
 .app-container {
     width: 75vw;
     height: 90vh;
-    background-color: white;
     border-top: var(--cell-thickness) solid black;
     border-bottom: var(--cell-thickness) solid black;
     justify-content: top;
@@ -34,33 +41,19 @@ body {
     height: 100%;
     margin: 0 auto;
     display: grid;
+    background-color: rgb(248, 238, 227);
     grid-template-columns: repeat(var(--grid-size), 1fr);
 }
 .cell {
-    /* border: 1px solid black; */
     width: var(--cell-size);
     height: var(--cell-size);
-    font-size: 18px;
     box-sizing: border-box;
-    position: relative;
 }
+
 .cell > div {
-    /* background-color: blue; */
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
     width: var(--cell-size);
 }
 
-.cell[position="start"] {
-    background: var(--start-end-color);
-    text-align: start;
-}
-.cell[position="end"] {
-    background: var(--start-end-color);
-    text-align: end;
-
-}
 .cell[instructions*="farRight"] {
     border-right: var(--cell-thickness) solid black;
 }
