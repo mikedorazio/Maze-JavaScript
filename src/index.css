@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 14px;
   color-scheme: light dark;
   --cell-size: 100%;
   --cell-thickness: 3px;
@@ -41,13 +41,13 @@ body {
     height: 100%;
     margin: 0 auto;
     display: grid;
-    background-color: rgb(248, 238, 227);
     grid-template-columns: repeat(var(--grid-size), 1fr);
 }
 .cell {
     width: var(--cell-size);
     height: var(--cell-size);
     box-sizing: border-box;
+    background-color: rgb(248, 238, 227);
 }
 
 .cell > div {
@@ -71,4 +71,7 @@ body {
 }
 .cell[instructions*="right"] {
     border-right: var(--cell-thickness) solid black;
+}
+.cell[status="current"] {
+    background-color: rgb(215, 204, 204);
 }

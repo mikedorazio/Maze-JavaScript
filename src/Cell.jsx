@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-export default function Cell( {isFirst, isLast, row, column, instructions, cellIndex} ) {
+export default function Cell( {isFirst, isLast, row, column, instructions, cellIndex, onMouseOver} ) {
     //console.log("Cell.row.column", isFirst, isLast, row, column);
 
     let position = ""
@@ -10,7 +10,7 @@ export default function Cell( {isFirst, isLast, row, column, instructions, cellI
     if (isLast) position = "end";
 
     return (
-        <div className="cell"  id={`cell-${row}-${column}`} instructions={instructions}>
+        <div className="cell"  index={cellIndex} id={`cell-${row}-${column}`} instructions={instructions} onMouseOver={onMouseOver} >
             {/* <div row="0" column="0" index={cellIndex} >{`${cellIndex} : ${row}-${column}`}</div> */}
             {/* <div row="0" column="0" index={cellIndex} >{`${cellIndex}`}</div> */}
             <div row="0" column="0" index={cellIndex} ></div>

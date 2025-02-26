@@ -3,7 +3,7 @@ import MazePanel from "./MazePanel";
 
 function App() {
     //TODO: update font-size based on rows
-    const rows = 4;
+    const rows = 16;
     const columns = rows;
     const boardRef = useRef(null);
 

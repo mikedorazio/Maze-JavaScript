@@ -3,9 +3,8 @@ import { useState } from "react";
 const useMaze = (rows, columns) => {
     let buildVisited = [];
     let history = [];
-    let realWalls = [];
     let totalCells = rows * columns;
-    realWalls = createInitialWallList();
+    let realWalls = createInitialWallList();
     build();
     let walls = createInstructions();
 
@@ -14,8 +13,8 @@ const useMaze = (rows, columns) => {
     // For rows/columns = 3 [{"i":0,"j":1},{"i":0,"j":3},{"i":1,"j":2},{"i":1,"j":4}.....]
     function createInitialWallList() {
         let w = [];
-        for (let i = 0; i < rows * columns; i++) {
-            for (let j = i; j < rows * columns; j++) {
+        for (let i = 0; i < totalCells; i++) {
+            for (let j = i; j < totalCells; j++) {
                 if (isRightOf(i, j)) {
                     w.push({ i: i, j: j });
                     //console.log("createInitialWallList", j + " is right: " + i);
@@ -40,9 +39,9 @@ const useMaze = (rows, columns) => {
         // array and insert walls that need to be drawn using the cell number as the key.
         let instructionWalls = [];
         let borderCellInstruction = "";
-        for (var i = 0; i < rows * columns; i++) {
+        for (var i = 0; i < totalCells; i++) {
             borderCellInstruction = "";
-            if ((i+1) % columns == 0 && (i + 1 != rows*columns)) {
+            if ((i+1) % columns == 0 && (i + 1 != totalCells)) {
                 //console.log("settting farRight at", i);
                 borderCellInstruction = "farRight"
             }
@@ -84,7 +83,7 @@ const useMaze = (rows, columns) => {
         return false;
     }
     function isBelow(a, b) {
-        if (b > rows * columns) return false;
+        if (b > totalCells) return false;
         return a + columns == b;
     }
     function getRowOfCell(cell) {
@@ -114,7 +113,7 @@ const useMaze = (rows, columns) => {
         }
 
         let right = cellNumber + 1;
-        if (right < rows * columns && getRowOfCell(right) == getRowOfCell(cellNumber)) {
+        if (right < totalCells && getRowOfCell(right) == getRowOfCell(cellNumber)) {
             if (!visited.includes(right)) {
                 //console.log("cellNumber", cellNumber, "has right neighbor", right);
                 neighborArray.push(right);
@@ -138,7 +137,7 @@ const useMaze = (rows, columns) => {
         }
 
         let below = cellNumber + columns;
-        if (below < rows * columns) {
+        if (below < totalCells) {
             if (!visited.includes(below)) {
                 //console.log("cellNumber", cellNumber, "has below neighbor", below);
                 neighborArray.push(below);
@@ -148,7 +147,7 @@ const useMaze = (rows, columns) => {
         } else {
             //console.log("below", below, "was not >= 0 ");
         }
-        console.log("getNeighbors called with", cellNumber, "and returning", neighborArray);
+        //console.log("getNeighbors called with", cellNumber, "and returning", neighborArray);
         return neighborArray;
     }
 
@@ -165,7 +164,7 @@ const useMaze = (rows, columns) => {
         //console.log("build at start", JSON.stringify(realWalls));
 
         let loopCount = 0; // this is just a catch in case we are in an infinite loop...we can remove soon
-        while (numberVisited < rows * columns) {
+        while (numberVisited < totalCells) {
             loopCount++;
             // get all the neighbors of this cell
             neighbors = getNeighbors(currentCell);
@@ -206,7 +205,7 @@ const useMaze = (rows, columns) => {
             }
         }
     }
-    return { walls };
+    return { walls, realWalls};
 };
 
 export default useMaze;
